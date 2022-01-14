@@ -18,6 +18,7 @@ const lastNameInput = document.querySelector("#last");
 const numberTournamentsInput = document.querySelector("#quantity");
 
 const regexName = /[a-zA-Z]{2,}/g;
+const regexDate = /[0-3][0-9](\/)[0-1][0-9](\/)[1-2][0-9][0-9][0-9]/g;
 const regexNumber = /[0-9]{1,}/g;
 
 // launch modal event
