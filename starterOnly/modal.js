@@ -24,22 +24,22 @@ const numberTournamentsInput = document.querySelector("#quantity");
 const tournamentParticipationInput = document.getElementsByName("location");
 const useTermInput = document.querySelector("#checkbox1");
 
-const regexName = /[a-zA-Z]{2,}/g;
-const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
-// const regexDate = /[0-3][0-9](\/)[0-1][0-9](\/)[0-9]{4}/g;
-const regexDate = /(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|(([1][26]|[2468][048]|[3579][26])00))))/g;
-const regexNumber = /[0-9]{1,}/g;
+const regexName = /^[a-zA-Z]{2,}$/;
+const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+const regexDate = /^[0-9]{4}(\-)[0-1][0-9](\-)[0-3][0-9]$/;
+// const regexDate = /(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|(([1][26]|[2468][048]|[3579][26])00))))/g;
+const regexNumber = /^[0-9]{1,}$/;
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // close modal event
 modalCloseBtn.addEventListener("click", closeModal);
 //Validate input
-firstNameInput.addEventListener("input", validateFirstName);
-lastNameInput.addEventListener("input", validateLastName);
-emailInput.addEventListener("input", validateEmail);
-birthdayInput.addEventListener("input", validateBirthday);
-numberTournamentsInput.addEventListener("input", validateNumberTournaments);
+firstNameInput.addEventListener("input", () => validateField(firstNameInput, "Votre prénom doit comporter au minimum deux caractères avec seulement des lettres.", regexName, 0));
+lastNameInput.addEventListener("input", () => validateField(lastNameInput, "Votre nom doit comporter au minimum deux caractères avec seulement des lettres.", regexName,1));
+emailInput.addEventListener("input", () => validateField(emailInput, "Votre e-mail doit être saisie dans un format valide.", regexEmail, 2));
+birthdayInput.addEventListener("input", () => validateField(birthdayInput, "Votre date de naissance doit être saisie dans un format valide.", regexDate, 3));
+numberTournamentsInput.addEventListener("input", () => validateField(numberTournamentsInput, "Le nombre de tournois doit seulement être en chiffre.", regexNumber, 4));
 for (const location of tournamentParticipationInput) {
   location.addEventListener("input", validateTournamentParticipation);
 }
@@ -54,6 +54,18 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
+function validateField(input, message, regex, index) {
+  if (regex.test(input.value)) {
+    formData[index].setAttribute("data-error-visible", "false");
+    formData[index].removeAttribute("data-error");
+    validateForm[index]= true;
+  } else {
+    formData[index].setAttribute("data-error-visible", "true");
+    formData[index].setAttribute("data-error", message);
+    validateForm[index]= false;
+  }
+}
+/*
 //Function validate first name
 function validateFirstName() {
   if (regexName.test(firstNameInput.value)) {
@@ -95,6 +107,7 @@ function validateEmail() {
 
 //Function validate birthday
 function validateBirthday() {
+  console.log(birthdayInput.value)
   if (regexDate.test(birthdayInput.value)) {
     formData[3].setAttribute("data-error-visible", "false");
     formData[3].removeAttribute("data-error");
@@ -117,7 +130,7 @@ function validateNumberTournaments() {
     formData[4].setAttribute("data-error", "Le nombre de tournois doit seulement être en chiffre.");
     validateForm[4]= false;
   }
-}
+}*/
 
 //Function validate participation tournament
 function validateTournamentParticipation() {
@@ -153,7 +166,7 @@ function validate(event) {
   console.log(event);
   event.preventDefault();
   if (validateForm.every(value => value === true)) {
-    validateForm.style.display= "none";
+    //validateForm.style.display= "none";
     const modalBody = document.querySelector(".modal-body");
     const heightModal = modalBody.offsetHeight;
     modalBody.innerHTML = "<p class='confirmation_inscription'>Merci pour votre inscription</p>";
