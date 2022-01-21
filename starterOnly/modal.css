@@ -186,6 +186,9 @@ main {
 .modal-body {
   padding: 15px 8%;
   margin: 15px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 label {
