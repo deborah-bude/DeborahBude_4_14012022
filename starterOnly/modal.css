@@ -33,12 +33,23 @@ img {
 .topnav {
   overflow: hidden;
   margin: 3.5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .header-logo {
-    float: left;
+  float: left;
+  max-width: 250px;
+}
+.header-logo img {
+  width: 100%;
 }
 .main-navbar {
-    float: right;
+  float: right;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
 }
 .topnav a {
   float: left;
@@ -46,10 +57,14 @@ img {
   color: #000000;
   text-align: center;
   padding: 12px 12px;
-  margin: 5px;
+  margin-right: 5px;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 1.2rem;
   font-family: Roboto, sans-serif;
+}
+
+.topnav a:last-child {
+  margin-right: 0;
 }
 
 .topnav a:hover {
@@ -69,15 +84,25 @@ img {
 }
 
 @media screen and (max-width: 768px) {
-  .topnav a {display: none;}
+  .topnav {
+    align-items: flex-start;
+  }
+  .topnav a {
+    display: none;
+  }
   .topnav a.icon {
     float: right;
+    display: block;
+  }
+  .main-navbar {
     display: block;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .topnav.responsive {position: relative;}
+  .topnav.responsive {
+    position: relative;
+  }
   .topnav.responsive .icon {
     position: absolute;
     right: 0;
@@ -90,16 +115,16 @@ img {
   }
 }
 
-
-
- @media screen and (max-width: 540px) {
-  .topnav a {display: none;}
+@media screen and (max-width: 540px) {
+  .topnav a {
+    display: none;
+  }
   .topnav a.icon {
     float: right;
     display: block;
     margin-top: -15px;
   }
-} 
+}
 
 main {
   font-size: 130%;
@@ -111,8 +136,6 @@ main {
   margin: 1px 20px 15px;
   border-radius: 2rem;
   text-align: justify;
-
-
 }
 
 .modal-btn {
@@ -407,6 +430,16 @@ input[data-error]::after {
   font-weight: normal;
   font-size: 16px;
 }
+/* Confirmation message inscription */
+.confirmation_inscription {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  /* visibility: hidden; */
+  opacity: 0;
+}
 .hero-section {
   min-height: 93vh;
   border-radius: 10px;
@@ -482,6 +515,13 @@ footer {
   padding-right: 2vw;
   margin: 0 20px;
 }
+
+@media screen and (max-width: 970px) {
+  .hero-headline {
+    font-size: 5rem;
+  }
+}
+
 @media screen and (max-width: 800px) {
   .hero-section {
     display: block;
@@ -530,4 +570,3 @@ footer {
     opacity: 1;
   }
 }
-
