@@ -31,7 +31,7 @@ const errorMessages = {
 const dataRegex = {
   name: /^[a-zA-Z]{2,}$/,
   email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-  date: /^[0-9]{4}(\-)[0-1][0-9](\-)[0-3][0-9]$/,
+  date: /^[1-2][0-9]{3}(\-)[0-1][0-9](\-)[0-3][0-9]$/,
   number: /^[0-9]{1,2}$/,
 }
 
@@ -57,11 +57,11 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // close modal event
 modalCloseBtn.addEventListener("click", closeModal);
 //Validate input
-firstNameInput.addEventListener("input", () => validateField(firstNameInput, "name"));
-lastNameInput.addEventListener("input", () => validateField(lastNameInput, "name"));
-emailInput.addEventListener("input", () => validateField(emailInput, "email"));
-birthdayInput.addEventListener("input", () => validateField(birthdayInput, "date"));
-numberTournamentsInput.addEventListener("input", () => validateField(numberTournamentsInput, "number"));
+firstNameInput.addEventListener("input", () => validateField(firstNameInput));
+lastNameInput.addEventListener("input", () => validateField(lastNameInput));
+emailInput.addEventListener("input", () => validateField(emailInput));
+birthdayInput.addEventListener("input", () => validateField(birthdayInput));
+numberTournamentsInput.addEventListener("input", () => validateField(numberTournamentsInput));
 for (const location of tournamentParticipationInput) {
   location.addEventListener("input", validateTournamentParticipation);
 }
@@ -75,16 +75,24 @@ function launchModal() {
 // close modal function
 function closeModal() {
   modalbg.style.display = "none";
-  // form.style.visibility = "visible";
-  // validationInscription.style.visibility = "hidden"
   form.style.opacity = "1";
   validationInscription.style.opacity = "0"
 }
 
 // Validation of basic fields witch contain just texts or numbers
-function validateField(input, regex) {
+function validateField(input) {
   const name = input.getAttribute('name')
-  if (dataRegex[regex].test(input.value)) {
+  let regex;
+  if (name === 'email') {
+    regex = dataRegex.email;
+  } else if (name === 'birthdate') {
+    regex = dataRegex.date;
+  } else if (name === 'quantity') {
+    regex = dataRegex.number;
+  } else {
+    regex = dataRegex.name;
+  }
+  if (regex.test(input.value)) {
     input.parentElement.setAttribute("data-error-visible", "false");
     input.parentElement.removeAttribute("data-error");
     validateForm[name]= true;
@@ -196,18 +204,17 @@ function validate(event) {
   console.log(event);
   event.preventDefault();
   if (Object.values(validateForm).every(value => value === true)) {
-    // form.style.visibility = "hidden";
-    // validationInscription.style.visibility = "visible";
     form.style.opacity = "0";
-    validationInscription.style.opacity = "1"
+    validationInscription.style.opacity = "1";
+    //mettre les valeurdans console.log
     form.reset();
   } else {
     console.log("Hum... quelque chose cloche...")
-    validateField(firstNameInput, "name");
-    validateField(lastNameInput, "name");
-    validateField(emailInput, "email");
-    validateField(birthdayInput, "date");
-    validateField(numberTournamentsInput, "number");
+    validateField(firstNameInput);
+    validateField(lastNameInput);
+    validateField(emailInput);
+    validateField(birthdayInput);
+    validateField(numberTournamentsInput);
     validateTournamentParticipation();
     validateUseTerm();
   }

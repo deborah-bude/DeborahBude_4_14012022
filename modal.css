@@ -437,7 +437,6 @@ input[data-error]::after {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  /* visibility: hidden; */
   opacity: 0;
 }
 .hero-section {
