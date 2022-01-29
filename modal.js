@@ -66,7 +66,8 @@ for (const location of tournamentParticipationInput) {
   location.addEventListener("input", validateTournamentParticipation);
 }
 useTermInput.addEventListener("input", validateUseTerm);
-submitButton.addEventListener("submit", () => validate(e))
+form.addEventListener("submit", validate)
+
 
 // launch modal form
 function launchModal() {
@@ -197,8 +198,6 @@ function validate(event) {
   console.log(event);
   event.preventDefault();
   if (Object.values(validateForm).every(value => value === true)) {
-    // form.style.visibility = "hidden";
-    // validationInscription.style.visibility = "visible";
     form.style.opacity = "0";
     validationInscription.style.opacity = "1"
     form.reset();
