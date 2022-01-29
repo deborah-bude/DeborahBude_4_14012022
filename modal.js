@@ -66,6 +66,8 @@ for (const location of tournamentParticipationInput) {
   location.addEventListener("input", validateTournamentParticipation);
 }
 useTermInput.addEventListener("input", validateUseTerm);
+form.addEventListener("submit", validate)
+
 
 // launch modal form
 function launchModal() {
