@@ -7,7 +7,33 @@ function editNav() {
   }
 }
 
-let validateForm= [false, false, false, false, false, false, true];
+const validateForm = {
+  first: false,
+  last: false,
+  email: false,
+  birthdate: false,
+  quantity: false,
+  location: false,
+  cgu: true,
+}
+
+const errorMessages = {
+  first: "Votre prénom doit comporter au minimum deux caractères avec seulement des lettres.",
+  last: "Votre nom doit comporter au minimum deux caractères avec seulement des lettres.",
+  email: "Votre e-mail doit être saisie dans un format valide.",
+  birthdate: "Votre date de naissance doit être saisie dans un format valide.",
+  quantity: "Le nombre de tournois doit seulement être en chiffre et compris entre 0 et 99.",
+  location: "Veuillez sélectionner un tournois auquel participer.",
+  cgu: "Vous devez accepter les conditions d'utilisations.",
+}
+
+//Regex for validation
+const dataRegex = {
+  name: /^[a-zA-Z]{2,}$/,
+  email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+  date: /^[1-2][0-9]{3}(\-)[0-1][0-9](\-)[0-3][0-9]$/,
+  number: /^[0-9]{1,2}$/,
+}
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
@@ -15,6 +41,7 @@ const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const modalCloseBtn = document.querySelector(".close");
 const form = document.querySelector("#form");
+const submitButton = document.querySelector(".btn-submit");
 //DOM Elements - Input
 const firstNameInput = document.querySelector("#first");
 const lastNameInput = document.querySelector("#last");
@@ -23,37 +50,61 @@ const birthdayInput = document.querySelector("#birthdate");
 const numberTournamentsInput = document.querySelector("#quantity");
 const tournamentParticipationInput = document.getElementsByName("location");
 const useTermInput = document.querySelector("#checkbox1");
-
-const regexName = /[a-zA-Z]{2,}/g;
-const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
-// const regexDate = /[0-3][0-9](\/)[0-1][0-9](\/)[0-9]{4}/g;
-const regexDate = /(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|(([1][26]|[2468][048]|[3579][26])00))))/g;
-const regexNumber = /[0-9]{1,}/g;
+const validationInscription = document.querySelector(".confirmation_inscription");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // close modal event
 modalCloseBtn.addEventListener("click", closeModal);
 //Validate input
-firstNameInput.addEventListener("input", validateFirstName);
-lastNameInput.addEventListener("input", validateLastName);
-emailInput.addEventListener("input", validateEmail);
-birthdayInput.addEventListener("input", validateBirthday);
-numberTournamentsInput.addEventListener("input", validateNumberTournaments);
+firstNameInput.addEventListener("input", () => validateField(firstNameInput));
+lastNameInput.addEventListener("input", () => validateField(lastNameInput));
+emailInput.addEventListener("input", () => validateField(emailInput));
+birthdayInput.addEventListener("input", () => validateField(birthdayInput));
+numberTournamentsInput.addEventListener("input", () => validateField(numberTournamentsInput));
 for (const location of tournamentParticipationInput) {
   location.addEventListener("input", validateTournamentParticipation);
 }
 useTermInput.addEventListener("input", validateUseTerm);
+form.addEventListener("submit", validate)
+
 
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
 }
+
 // close modal function
 function closeModal() {
   modalbg.style.display = "none";
+  form.style.opacity = "1";
+  validationInscription.style.opacity = "0"
 }
 
+// Validation of basic fields witch contain just texts or numbers
+function validateField(input) {
+  const name = input.getAttribute('name')
+  let regex;
+  if (name === 'email') {
+    regex = dataRegex.email;
+  } else if (name === 'birthdate') {
+    regex = dataRegex.date;
+  } else if (name === 'quantity') {
+    regex = dataRegex.number;
+  } else {
+    regex = dataRegex.name;
+  }
+  if (regex.test(input.value)) {
+    input.parentElement.setAttribute("data-error-visible", "false");
+    input.parentElement.removeAttribute("data-error");
+    validateForm[name] = true;
+  } else {
+    input.parentElement.setAttribute("data-error-visible", "true");
+    input.parentElement.setAttribute("data-error", errorMessages[name]);
+    validateForm[name] = false;
+  }
+}
+/*
 //Function validate first name
 function validateFirstName() {
   if (regexName.test(firstNameInput.value)) {
@@ -95,6 +146,7 @@ function validateEmail() {
 
 //Function validate birthday
 function validateBirthday() {
+  console.log(birthdayInput.value)
   if (regexDate.test(birthdayInput.value)) {
     formData[3].setAttribute("data-error-visible", "false");
     formData[3].removeAttribute("data-error");
@@ -117,21 +169,21 @@ function validateNumberTournaments() {
     formData[4].setAttribute("data-error", "Le nombre de tournois doit seulement être en chiffre.");
     validateForm[4]= false;
   }
-}
+}*/
 
 //Function validate participation tournament
 function validateTournamentParticipation() {
-  for(var i=0; i<tournamentParticipationInput.length;i++){
-    if(tournamentParticipationInput[i].checked == true){
-      formData[5].setAttribute("data-error-visible", "false");
-      formData[5].removeAttribute("data-error");
-      validateForm[5]= true;
+  for (var i = 0; i < tournamentParticipationInput.length; i++) {
+    if (tournamentParticipationInput[i].checked == true) {
+      tournamentParticipationInput[i].parentElement.setAttribute("data-error-visible", "false");
+      tournamentParticipationInput[i].parentElement.removeAttribute("data-error");
+      validateForm.location = true;
       break;
     }
     else {
-      formData[5].setAttribute("data-error-visible", "true");
-      formData[5].setAttribute("data-error", "Veuillez sélectionner un tournois auquel participer.");
-      validateForm[5]= false;
+      tournamentParticipationInput[i].parentElement.setAttribute("data-error-visible", "true");
+      tournamentParticipationInput[i].parentElement.setAttribute("data-error", errorMessages.location);
+      validateForm.location = false;
     }
   }
 }
@@ -139,26 +191,33 @@ function validateTournamentParticipation() {
 //Function validate participation tournament
 function validateUseTerm() {
   if (useTermInput.checked) {
-    formData[6].setAttribute("data-error-visible", "false");
-    formData[6].removeAttribute("data-error");
-    validateForm[6]= true;
+    useTermInput.parentElement.setAttribute("data-error-visible", "false");
+    useTermInput.parentElement.removeAttribute("data-error");
+    validateForm.cgu = true;
   } else {
-    formData[6].setAttribute("data-error-visible", "true");
-    formData[6].setAttribute("data-error", "Vous devez accepter les conditions d'utilisations.");
-    validateForm[6]= false;
+    useTermInput.parentElement.setAttribute("data-error-visible", "true");
+    useTermInput.parentElement.setAttribute("data-error", errorMessages.cgu);
+    validateForm.cgu = false;
   }
 }
 
+// Validation subscription
 function validate(event) {
   console.log(event);
   event.preventDefault();
-  if (validateForm.every(value => value === true)) {
-    validateForm.style.display= "none";
-    const modalBody = document.querySelector(".modal-body");
-    const heightModal = modalBody.offsetHeight;
-    modalBody.innerHTML = "<p class='confirmation_inscription'>Merci pour votre inscription</p>";
-    modalBody.style.height = heightModal + 'px';
+  if (Object.values(validateForm).every(value => value === true)) {
+    form.style.opacity = "0";
+    validationInscription.style.opacity = "1";
+    //mettre les valeurdans console.log
+    form.reset();
   } else {
     console.log("Hum... quelque chose cloche...")
+    validateField(firstNameInput);
+    validateField(lastNameInput);
+    validateField(emailInput);
+    validateField(birthdayInput);
+    validateField(numberTournamentsInput);
+    validateTournamentParticipation();
+    validateUseTerm();
   }
 }
