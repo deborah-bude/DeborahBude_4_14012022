@@ -50,7 +50,7 @@ const birthdayInput = document.querySelector("#birthdate");
 const numberTournamentsInput = document.querySelector("#quantity");
 const tournamentParticipationInput = document.getElementsByName("location");
 const useTermInput = document.querySelector("#checkbox1");
-const validationInscription= document.querySelector(".confirmation_inscription");
+const validationInscription = document.querySelector(".confirmation_inscription");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -97,11 +97,11 @@ function validateField(input) {
   if (regex.test(input.value)) {
     input.parentElement.setAttribute("data-error-visible", "false");
     input.parentElement.removeAttribute("data-error");
-    validateForm[name]= true;
+    validateForm[name] = true;
   } else {
     input.parentElement.setAttribute("data-error-visible", "true");
     input.parentElement.setAttribute("data-error", errorMessages[name]);
-    validateForm[name]= false;
+    validateForm[name] = false;
   }
 }
 /*
@@ -173,8 +173,8 @@ function validateNumberTournaments() {
 
 //Function validate participation tournament
 function validateTournamentParticipation() {
-  for(var i=0; i<tournamentParticipationInput.length;i++){
-    if(tournamentParticipationInput[i].checked == true){
+  for (var i = 0; i < tournamentParticipationInput.length; i++) {
+    if (tournamentParticipationInput[i].checked == true) {
       tournamentParticipationInput[i].parentElement.setAttribute("data-error-visible", "false");
       tournamentParticipationInput[i].parentElement.removeAttribute("data-error");
       validateForm.location = true;
@@ -193,11 +193,11 @@ function validateUseTerm() {
   if (useTermInput.checked) {
     useTermInput.parentElement.setAttribute("data-error-visible", "false");
     useTermInput.parentElement.removeAttribute("data-error");
-    validateForm.cgu= true;
+    validateForm.cgu = true;
   } else {
     useTermInput.parentElement.setAttribute("data-error-visible", "true");
     useTermInput.parentElement.setAttribute("data-error", errorMessages.cgu);
-    validateForm.cgu= false;
+    validateForm.cgu = false;
   }
 }
 
