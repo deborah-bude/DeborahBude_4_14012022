@@ -104,72 +104,6 @@ function validateField(input) {
     validateForm[name] = false;
   }
 }
-/*
-//Function validate first name
-function validateFirstName() {
-  if (regexName.test(firstNameInput.value)) {
-    formData[0].setAttribute("data-error-visible", "false");
-    formData[0].removeAttribute("data-error");
-    validateForm[0]= true;
-  } else {
-    formData[0].setAttribute("data-error-visible", "true");
-    formData[0].setAttribute("data-error", "Votre prénom doit comporter au minimum deux caractères avec seulement des lettres.");
-    validateForm[0]= false;
-  }
-}
-
-//Function validate last name
-function validateLastName() {
-  if (regexName.test(lastNameInput.value)) {
-    formData[1].setAttribute("data-error-visible", "false");
-    formData[1].removeAttribute("data-error");
-    validateForm[1]= true;
-  } else {
-    formData[1].setAttribute("data-error-visible", "true");
-    formData[1].setAttribute("data-error", "Votre nom de famille doit comporter au minimum deux caractères avec seulement des lettres.")
-    validateForm[1]= false;
-  }
-}
-
-//Function validate last name
-function validateEmail() {
-  if (regexEmail.test(emailInput.value)) {
-    formData[2].setAttribute("data-error-visible", "false");
-    formData[2].removeAttribute("data-error");
-    validateForm[2]= true;
-  } else {
-    formData[2].setAttribute("data-error-visible", "true");
-    formData[2].setAttribute("data-error", "Votre e-mail doit être saisie dans un format valide.");
-    validateForm[2]= false;
-  }
-}
-
-//Function validate birthday
-function validateBirthday() {
-  console.log(birthdayInput.value)
-  if (regexDate.test(birthdayInput.value)) {
-    formData[3].setAttribute("data-error-visible", "false");
-    formData[3].removeAttribute("data-error");
-    validateForm[3]= true;
-  } else {
-    formData[3].setAttribute("data-error-visible", "true");
-    formData[3].setAttribute("data-error", "Votre date de naissance doit être saisie dans un format valide.");
-    validateForm[3]= false;
-  }
-}
-
-//Function validate number tournaments
-function validateNumberTournaments() {
-  if (regexNumber.test(numberTournamentsInput.value)) {
-    formData[4].setAttribute("data-error-visible", "false");
-    formData[4].removeAttribute("data-error");
-    validateForm[4]= true;
-  } else {
-    formData[4].setAttribute("data-error-visible", "true");
-    formData[4].setAttribute("data-error", "Le nombre de tournois doit seulement être en chiffre.");
-    validateForm[4]= false;
-  }
-}*/
 
 //Function validate participation tournament
 function validateTournamentParticipation() {
@@ -205,13 +139,30 @@ function validateUseTerm() {
 function validate(event) {
   console.log(event);
   event.preventDefault();
+  // Checking each value of the validateForm table
   if (Object.values(validateForm).every(value => value === true)) {
     form.style.opacity = "0";
     validationInscription.style.opacity = "1";
-    //mettre les valeurdans console.log
     form.reset();
+    //Generation of inputs values in the console
+    let location;
+    for (var i = 0; i < tournamentParticipationInput.length; i++) {
+      if (tournamentParticipationInput[i].checked == true) {
+        location = tournamentParticipationInput[i];
+      }
+    }
+    console.log("Le message a bien été envoyé !");
+    console.log(validateForm);
+    console.log(`Nom : ${firstNameInput.value} `);
+    console.log(`Prénom : ${lastNameInput.value} `);
+    console.log(`E-mail : ${emailInput.value} `);
+    console.log(`Date de naissance : ${birthdayInput.value} `);
+    console.log(`Nombre de tournois auquel il a participé : ${numberTournamentsInput.value} `);
+    console.log(`Lieu du tournois auquel il souhaite participer : ${location.value} `);
+    console.log(`Acceptation des conditions d'utilisation : ${useTermInput.checked} `);
   } else {
     console.log("Hum... quelque chose cloche...")
+    //Form error generation
     validateField(firstNameInput);
     validateField(lastNameInput);
     validateField(emailInput);
