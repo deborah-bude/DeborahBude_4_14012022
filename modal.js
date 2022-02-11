@@ -29,7 +29,7 @@ const errorMessages = {
 
 //Regex for validation
 const dataRegex = {
-  name: /^[a-zA-Z]{2,}$/,
+  name: /^[^ 0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/,
   email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
   date: /^[1-2][0-9]{3}(\-)[0-1][0-9](\-)[0-3][0-9]$/,
   number: /^[0-9]{1,2}$/,
@@ -143,7 +143,6 @@ function validate(event) {
   if (Object.values(validateForm).every(value => value === true)) {
     form.style.opacity = "0";
     validationInscription.style.opacity = "1";
-    form.reset();
     //Generation of inputs values in the console
     let location;
     for (var i = 0; i < tournamentParticipationInput.length; i++) {
@@ -151,8 +150,13 @@ function validate(event) {
         location = tournamentParticipationInput[i];
       }
     }
+    validateForm.first= false;
+    validateForm.last= false;
+    validateForm.email= false;
+    validateForm.birthdate= false;
+    validateForm.quantity= false;
+    validateForm.location= false;
     console.log("Le message a bien été envoyé !");
-    console.log(validateForm);
     console.log(`Nom : ${firstNameInput.value} `);
     console.log(`Prénom : ${lastNameInput.value} `);
     console.log(`E-mail : ${emailInput.value} `);
@@ -160,6 +164,7 @@ function validate(event) {
     console.log(`Nombre de tournois auquel il a participé : ${numberTournamentsInput.value} `);
     console.log(`Lieu du tournois auquel il souhaite participer : ${location.value} `);
     console.log(`Acceptation des conditions d'utilisation : ${useTermInput.checked} `);
+    form.reset();
   } else {
     console.log("Hum... quelque chose cloche...")
     //Form error generation
